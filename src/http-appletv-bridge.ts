@@ -1,11 +1,13 @@
 import * as express from 'express';
 import * as morgan from 'morgan';
+import * as dotenv from 'dotenv';
 
 let powerState = false;
 
 // Specify the port and IP address for the server to listen on
-const port = 3000;
-const address = '127.0.0.1';
+dotenv.config({ path: __dirname + '/config.env' });
+const port = +(process.env.HOST_PORT ?? 8080);
+const address = process.env.HOST_ADDRESS ?? 'localhost';
 
 // Create a new Express application instance
 const app = express();
