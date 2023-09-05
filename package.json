@@ -2,11 +2,10 @@
   "name": "http-appletv-bridge",
   "description": "A bridge server that can run on a Raspberry Pi.  It will connect to your Apple TV, and expose its power state via a simple HTTP interface.",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "http-appletv-bridge.js",
   "scripts": {
-    "start": "npm run check-pyatv && npm run build && node dist/helloWorld.js",
-    "build": "tsc",
+    "start": "npm run check-pyatv && npm run build & nodemon dist/http-appletv-bridge.js",
+    "build": "tsc -w",
     "clean": "rm -rf dist",
     "check-pyatv": "pip list | grep pyatv || npm run install-pyatv",
     "install-pyatv": "pip install pyatv"
@@ -16,6 +15,13 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^20.5.4",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
     "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/morgan": "^1.9.5",
+    "nodemon": "^3.0.1"
   }
 }
