@@ -47,7 +47,7 @@ function defineMacOSService() {
     var service = new Service({
         name: 'http-appletv-bridge',
         description: 'HTTP server for Apple TV',
-        script: __dirname + '/dist/http-appletv-bridge.js',
+        script: __dirname + '/http-appletv-bridge.js',
         env: {
             name: 'HOME',
             value: process.env["USERPROFILE"]
