@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run check-pyatv && npm run buildWithReload & nodemon dist/http-appletv-bridge.js",
     "build": "mkdir -p ./dist && cp ./src/config.env ./dist/config.env && tsc",
-    "buildWithReload": "mkdir -p ./dist && cp ./src/config.env ./dist/config.env && tsc -w",
+    "buildWithReload": "mkdir -p ./dist && cp ./src/config.env ./dist/config.env && ./node_modules/typescript/bin/tsc -w",
     "clean": "rm -rf dist",
     "check-pyatv": "pip list | grep pyatv || npm run install-pyatv",
     "install-pyatv": "pip install pyatv"
@@ -27,7 +27,7 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "morgan": "^1.10.0",
-    "node-mac": "^1.0.1",
+    "node": "^20.7.0",
     "typescript": "^5.2.2"
   },
   "devDependencies": {

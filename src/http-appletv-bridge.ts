@@ -19,7 +19,7 @@ function startServer() {
     app.use(morgan('tiny'));
 
     app.get('/ping', (req, res) => {
-        res.send('Hello.');
+        res.send('Hello world!');
     });
 
     app.get('/switch', (req, res) => {
