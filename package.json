@@ -8,8 +8,11 @@
     "build": "mkdir -p ./dist && cp ./src/config.env ./dist/config.env && tsc",
     "buildWithReload": "mkdir -p ./dist && cp ./src/config.env ./dist/config.env && ./node_modules/typescript/bin/tsc -w",
     "clean": "rm -rf dist",
-    "check-pyatv": "pip list | grep pyatv || npm run install-pyatv",
-    "install-pyatv": "pip install pyatv"
+    "check-pyatv": "pip3 list | grep pyatv || pip3 install pyatv",
+    "installService": "npm run build && node dist/http-appletv-bridge.js installService",
+    "uninstallService": "node dist/http-appletv-bridge.js uninstallService",
+    "startService": "node dist/http-appletv-bridge.js startService",
+    "stopService": "node dist/http-appletv-bridge.js stopService"
   },
   "bin": "./dist/http-appletv-bridge.js",
   "keywords": [],
@@ -29,6 +32,9 @@
     "morgan": "^1.10.0",
     "node": "^20.7.0",
     "typescript": "^5.2.2"
+  },
+  "optionalDependencies": {
+    "node-mac": "^1.0.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
