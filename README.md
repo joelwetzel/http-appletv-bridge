@@ -37,7 +37,7 @@ It should now start automatically, but there are other commands too:
 
 **Did atvremote install?**
 
->atvremote -scan
+>atvremote scan
 
 >npm run check-pyatv
 
