@@ -4,6 +4,7 @@
         "module": "commonjs",
         "outDir": "./dist",
         "rootDir": "./src", // Assuming your TypeScript files are in a 'src' directory
-        "strict": true
+        "strict": true,
+        "sourceMap": true
     }
 }

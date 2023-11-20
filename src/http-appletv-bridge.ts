@@ -4,7 +4,11 @@ import * as express from 'express';
 import * as morgan from 'morgan';
 import * as dotenv from 'dotenv';
 
+import pyatv, { NodePyATVDevice, NodePyATVDeviceEvent, NodePyATVPowerState } from '@sebbo2002/node-pyatv';
+
 let powerState = false;
+
+let atv: NodePyATVDevice;
 
 function startServer() {
     console.log('Starting server...');
@@ -13,6 +17,10 @@ function startServer() {
     dotenv.config({ path: __dirname + '/config.env' });
     const port = +(process.env.HOST_PORT ?? 8080);
     const address = process.env.HOST_ADDRESS ?? 'localhost';
+
+    const appletv_name = process.env.APPLETV_NAME ?? 'Apple TV';
+    const appletv_ip = process.env.APPLETV_IP ?? 'localhost';
+    const appletv_credentials = process.env.APPLETV_CREDENTIALS ?? '';
 
     // Create a new Express application instance
     const app = express();
@@ -28,14 +36,32 @@ function startServer() {
         res.send(String(powerState));
     });
 
-    app.get('/on', (req, res) => {
+    app.get('/on', async (req, res) => {
         powerState = true;
-        res.send('OK');
+        await atv.turnOn();
+        res.send(String(powerState));
     });
 
-    app.get('/off', (req, res) => {
+    app.get('/off', async (req, res) => {
         powerState = false;
-        res.send('OK');
+        await atv.turnOff();
+        res.send(String(powerState));
+    });
+
+    atv = pyatv.device({
+        name: appletv_name,
+        host: appletv_ip,
+        airplayCredentials: appletv_credentials,
+        companionCredentials: appletv_credentials,
+    });
+
+    atv.on('update:powerState', (event: NodePyATVDeviceEvent | Error) => {
+        if (event instanceof Error) {
+            return;
+        }
+        powerState = event.newValue === NodePyATVPowerState.on;
+
+        console.log('update:powerState - ' + String(powerState));
     });
 
     app.listen(port, address, () => {
