@@ -48,6 +48,18 @@ It should now start automatically, but there are other commands too:
 
 For why, see: https://stackoverflow.com/questions/76187256/importerror-urllib3-v2-0-only-supports-openssl-1-1-1-currently-the-ssl-modu
 
+**Did pyatv install, but atvremote isn't in PATH?**
+
+>pip3 show pyatv
+>
+(copy the location)
+>
+>cd /etc
+>
+>sudo nano paths
+>
+(past the location in, and add /pyatv to the end of it)
+
 **Having trouble running the service on Mac?**
 - Check in /Library/LaunchDaemons for the plist file
 - Check console.app for any logs being written
