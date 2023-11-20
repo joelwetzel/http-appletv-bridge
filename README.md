@@ -35,11 +35,18 @@ It should now start automatically, but there are other commands too:
 
 ## If you have trouble:
 
-**Did atvremote install?**
+**Did pyatv install?**
 
 >atvremote scan
-
+>
 >npm run check-pyatv
+
+**Did pyatv install, but throws an error like: urllib3 v2.0 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with LibreSSL 2.8.3.**
+>pip3 uninstall urllib3
+>
+>pip3 install 'urllib3<2.0'
+
+For why, see: https://stackoverflow.com/questions/76187256/importerror-urllib3-v2-0-only-supports-openssl-1-1-1-currently-the-ssl-modu
 
 **Having trouble running the service on Mac?**
 - Check in /Library/LaunchDaemons for the plist file
