@@ -40,6 +40,8 @@ class AtvWrapper {
                 }
                 this._powerState = event.newValue === NodePyATVPowerState.on;
 
+                this.notifyWebhook();
+
                 console.log('update:powerState - ' + String(this._powerState));
             });
         }
@@ -58,13 +60,12 @@ class AtvWrapper {
             }
         } catch (error) {
             console.error(error);
+            return;
         }
 
         this._powerState = true;
 
-        // Make an HTTP GET request to the webhook_on URL
-        // Ignore any errors
-        require('http').get(this.config.webhook_on, () => { });
+        this.notifyWebhook();
     }
 
     async turnOff() {
@@ -75,13 +76,29 @@ class AtvWrapper {
             }
         } catch (error) {
             console.error(error);
+            return;
         }
 
         this._powerState = false;
 
-        // Make an HTTP GET request to the webhook_on URL
-        // Ignore any errors
-        require('http').get(this.config.webhook_off, () => { });
+        this.notifyWebhook();
+    }
+
+    notifyWebhook() {
+        if (this._powerState) {
+            // Make an HTTP GET request to the webhook_on URL
+            // Ignore any errors
+            if (this.config.webhook_on && this.config.webhook_on.length > 0) {
+                require('http').get(this.config.webhook_on, () => { });
+            }
+        }
+        else {
+            // Make an HTTP GET request to the webhook_off URL
+            // Ignore any errors
+            if (this.config.webhook_off && this.config.webhook_off.length > 0) {
+                require('http').get(this.config.webhook_off, () => { });
+            }
+        }
     }
 }
 
