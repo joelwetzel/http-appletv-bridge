@@ -1,114 +1,17 @@
 #!/usr/bin/env node
 
-import * as express from 'express';
-import * as morgan from 'morgan';
-import * as dotenv from 'dotenv';
-
-import pyatv, { NodePyATVDevice, NodePyATVDeviceEvent, NodePyATVPowerState } from '@sebbo2002/node-pyatv';
-
-import Test from './test';
+import Config from './config';
+import AtvWrapper from './atvWrapper';
 import Server from './server';
 
-let isConnected = false;
-let powerState = false;
-
-let atv: NodePyATVDevice;
+let config: Config;
+let atvWrapper: AtvWrapper;
+let server: Server;
 
 function startServer() {
-    console.log('Starting server...');
-
-    var t = new Test();
-    console.log(t.gen());
-
-    // Specify the port and IP address for the server to listen on
-    dotenv.config({ path: __dirname + '/config.env' });
-    const port = +(process.env.HOST_PORT ?? 8080);
-    const address = process.env.HOST_ADDRESS ?? 'localhost';
-
-    const appletv_name = process.env.APPLETV_NAME ?? 'Apple TV';
-    const appletv_ip = process.env.APPLETV_IP ?? 'localhost';
-    const appletv_credentials = process.env.APPLETV_CREDENTIALS ?? '';
-
-    const webhook_on = process.env.WEBHOOK_ON ?? '';
-    const webhook_off = process.env.WEBHOOK_OFF ?? '';
-
-    // Create a new Express application instance
-    const app = express();
-
-    // Logging
-    app.use(morgan('tiny'));
-
-    app.get('/ping', (req, res) => {
-        res.send('Hello world!');
-    });
-
-    app.get('/switch', (req, res) => {
-        res.send(String(powerState));
-    });
-
-    app.get('/on', async (req, res) => {
-        powerState = true;
-
-        // Turn on the apple tv, but errors should only be logged, not stop execution\
-        try {
-            if (isConnected) {
-                await atv.turnOn();
-            }
-        } catch (error) {
-            console.error(error);
-        }
-
-        // Make an HTTP GET request to the webhook_on URL
-        // Ignore any errors
-        require('http').get(webhook_on, () => { });
-
-        res.send(String(powerState));
-    });
-
-    app.get('/off', async (req, res) => {
-        powerState = false;
-
-        // Turn off the apple tv, but errors should only be logged, not stop execution\
-        try {
-            if (isConnected) {
-                await atv.turnOff();
-            }
-        } catch (error) {
-            console.error(error);
-        }
-
-        // Make an HTTP GET request to the webhook_off URL
-        // Ignore any errors
-        require('http').get(webhook_off, () => { });
-
-        res.send(String(powerState));
-    });
-
-    try {
-        atv = pyatv.device({
-            name: appletv_name,
-            host: appletv_ip,
-            airplayCredentials: appletv_credentials,
-            companionCredentials: appletv_credentials,
-        });
-
-        atv.on('update:powerState', (event: NodePyATVDeviceEvent | Error) => {
-            if (event instanceof Error) {
-                return;
-            }
-            powerState = event.newValue === NodePyATVPowerState.on;
-
-            console.log('update:powerState - ' + String(powerState));
-        });
-
-        isConnected = true;
-    } catch (error) {
-        console.error(error);
-    }
-
-    app.listen(port, address, () => {
-        console.log(`Server running at http://${address}:${port}`);
-    });
+    config = new Config(__dirname + '/config.env');
+    atvWrapper = new AtvWrapper(config);
+    server = new Server(config, atvWrapper);
 }
 
 function defineMacOSService() {
