@@ -7,7 +7,7 @@
 ## Prerequisites:
 - NodeJS
 - Python3
-- Pip
+- Pip3
 
 ## Get Started:
 
