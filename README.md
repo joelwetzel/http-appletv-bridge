@@ -4,6 +4,11 @@
 
 -----
 
+## Prerequisites:
+- NodeJS
+- Python3
+- Pip
+
 ## Get Started:
 
 1. >git clone https://github.com/joelwetzel/http-appletv-bridge.git
