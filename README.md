@@ -53,6 +53,17 @@ It should now start automatically, but there are other commands too:
 
 For why, see: https://stackoverflow.com/questions/76187256/importerror-urllib3-v2-0-only-supports-openssl-1-1-1-currently-the-ssl-modu
 
+**Does pyatv fail to install on Linux with an error like: fatal error: Python.h: No such file or directory**
+>sudo apt-get install python-dev
+
+or
+
+>sudo apt-get install python3-dev
+
+then
+
+>pip3 install pyatv
+
 **Did pyatv install, but atvremote isn't in PATH?**
 
 >pip3 show pyatv
