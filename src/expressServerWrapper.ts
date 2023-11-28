@@ -4,7 +4,7 @@ import * as morgan from 'morgan';
 import Config from './config';
 import AtvWrapper from './atvWrapper';
 
-class Server {
+class ExpressServerWrapper {
     private app: express.Application;
 
     constructor(config: Config, atvWrapper: AtvWrapper) {
@@ -24,13 +24,13 @@ class Server {
         });
 
         this.app.get('/on', async (req, res) => {
-            atvWrapper.turnOn();
+            await atvWrapper.turnOnAsync();
 
             res.send(String(atvWrapper.powerState));
         });
 
         this.app.get('/off', async (req, res) => {
-            atvWrapper.turnOff();
+            await atvWrapper.turnOffAsync();
 
             res.send(String(atvWrapper.powerState));
         });
@@ -42,4 +42,4 @@ class Server {
 
 }
 
-export default Server;
+export default ExpressServerWrapper;

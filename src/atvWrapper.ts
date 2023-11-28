@@ -52,7 +52,7 @@ class AtvWrapper {
         this._isConnected = true;
     }
 
-    async turnOn() {
+    async turnOnAsync() {
         // Turn on the apple tv, but errors should only be logged, not stop execution\
         try {
             if (this._isConnected && this.atv) {
@@ -68,7 +68,7 @@ class AtvWrapper {
         this.notifyWebhook();
     }
 
-    async turnOff() {
+    async turnOffAsync() {
         // Turn off the apple tv, but errors should only be logged, not stop execution\
         try {
             if (this._isConnected && this.atv) {
