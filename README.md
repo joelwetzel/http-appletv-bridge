@@ -1,44 +1,51 @@
 # http-appletv-bridge
 
-## UNDER DEVELOPMENT: A bridge server that can run on a Raspberry Pi.  It will connect to your Apple TV, and expose its power state via a simple HTTP interface.
+### UNDER DEVELOPMENT: A bridge server that can run on a Raspberry Pi.  It will connect to your Apple TV, and expose its power state via a simple HTTP interface.
 
 -----
 
-## Prerequisites:
+### Prerequisites:
 - NodeJS
 - Python3
 - Pip3
 
-## Get Started:
+### Get Started:
 
 1. >git clone https://github.com/joelwetzel/http-appletv-bridge.git
 2. >cd http-appletv-bridge
 3. >npm install
-4. >npm run build
+4. Edit the values in /src/config.env
+5. >npm run build
 
 -----
 
-## Run from Command Line:
+### Run from Command Line:
 
 >npm run start
 
 _____
 
-## Install as a Service:
+### Install as a Service:
 
->sudo npm run installService
+>sudo npm run install-service
 
 It should now start automatically, but there are other commands too:
 
->sudo npm run startService
+>sudo npm run start-service
 
->sudo npm run stopService
+>sudo npm run stop-service
 
->sudo npm run uninstallService
+>sudo npm run uninstall-service
+
+After installing as a service, if you need to see the logs:
+
+On MacOS: Look for httpappletvbridge in console.app
+
+On Linux: journalctl -f -u httpappletvbridge
 
 -----
 
-## If you have trouble:
+### If you have trouble:
 
 **Did pyatv install?**
 
