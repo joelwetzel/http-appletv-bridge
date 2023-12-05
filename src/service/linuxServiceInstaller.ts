@@ -59,11 +59,16 @@ class LinuxServiceInstaller implements IServiceInstaller {
 
         service.on('install', function () {
             console.log('Service installed.');
+            service.enable();
             service.start();
         });
 
         service.on('start', function () {
             console.log('Service started.');
+        });
+
+        service.on('enable', function () {
+            console.log('Service enabled.');
         });
 
         service.on('uninstall', function () {
