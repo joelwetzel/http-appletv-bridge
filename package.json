@@ -10,7 +10,7 @@
     "build-with-reload": "mkdir -p ./dist && cp ./src/config.env ./dist/config.env && ./node_modules/typescript/bin/tsc -w",
     "clean": "rm -rf dist",
     "check-pyatv": "pip3 list | grep pyatv || pip3 install pyatv",
-    "install-service": "npm run build && node dist/http-appletv-bridge.js installService",
+    "install-service": "node dist/http-appletv-bridge.js installService",
     "uninstall-service": "node dist/http-appletv-bridge.js uninstallService",
     "start-service": "node dist/http-appletv-bridge.js startService",
     "stop-service": "node dist/http-appletv-bridge.js stopService"
