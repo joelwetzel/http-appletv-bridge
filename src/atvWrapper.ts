@@ -21,35 +21,37 @@ class AtvWrapper {
     constructor(config: Config) {
         this.config = config;
 
-        try {
-            this.atv = pyatv.device({
-                name: config.appletv_name,
-                host: config.appletv_ip,
-                airplayCredentials: config.appletv_credentials,
-                companionCredentials: config.appletv_credentials,
+        if (this.config.appletv_enable) {
+            try {
+                this.atv = pyatv.device({
+                    name: config.appletv_name,
+                    host: config.appletv_ip,
+                    airplayCredentials: config.appletv_credentials,
+                    companionCredentials: config.appletv_credentials,
 
-            });
+                });
 
-            this.atv.on('error', (error: Error | NodePyATVDeviceEvent) => {
+                this.atv.on('error', (error: Error | NodePyATVDeviceEvent) => {
+                    console.error(error);
+                });
+
+                this.atv.on('update:powerState', (event: NodePyATVDeviceEvent | Error) => {
+                    if (event instanceof Error) {
+                        return;
+                    }
+                    this._powerState = event.newValue === NodePyATVPowerState.on;
+
+                    this.notifyWebhook();
+
+                    console.log('update:powerState - ' + String(this._powerState));
+                });
+
+                this._isConnected = true;
+            }
+            catch (error) {
                 console.error(error);
-            });
-
-            this.atv.on('update:powerState', (event: NodePyATVDeviceEvent | Error) => {
-                if (event instanceof Error) {
-                    return;
-                }
-                this._powerState = event.newValue === NodePyATVPowerState.on;
-
-                this.notifyWebhook();
-
-                console.log('update:powerState - ' + String(this._powerState));
-            });
+            }
         }
-        catch (error) {
-            console.error(error);
-        }
-
-        this._isConnected = true;
     }
 
     async turnOnAsync() {
